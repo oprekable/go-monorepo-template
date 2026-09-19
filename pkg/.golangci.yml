@@ -1,0 +1,94 @@
+run:
+  timeout: 5m
+  modules-download-mode: readonly
+
+linters:
+  disable-all: true
+
+  enable:
+    - asciicheck
+    - bidichk
+    - decorder
+    - durationcheck
+    - errcheck
+    - errorlint
+    #    - execinquery
+    - gofmt
+    - goheader
+    - goimports
+    - gomodguard
+    - goprintffuncname
+    - gosec
+    - gosimple
+    - govet
+    - grouper
+    - importas
+    - ineffassign
+    - loggercheck
+    - nilerr
+    - nosprintfhostport
+    - reassign
+    - revive
+    - rowserrcheck
+    - sqlclosecheck
+    - staticcheck
+    - tagalign
+    - testableexamples
+    - typecheck
+    - unconvert
+    - unused
+    - whitespace
+
+linters-settings:
+  gosec:
+    excludes:
+      - G101 # Look for hard coded credentials
+      - G102 # Bind to all interfaces
+      - G109 # Potential Integer overflow made by strconv.Atoi result conversion to int16/32
+      - G112 # Potential slowloris attack
+      - G114 # Use of net/http serve function that has no support for setting timeouts
+      - G306 # Poor file permissions used when writing to a new file
+      - G307 # Deferring a method which returns an error
+
+  gosimple:
+    checks:
+      - all
+      - -S1000 # Use plain channel send or receive instead of single-case select
+      - -S1016 # Use a type conversion instead of manually copying struct fields
+      - -S1034 # Use result of type assertion to simplify cases
+
+  govet:
+    enable-all: true
+    disable:
+      - copylocks
+      - deepequalerrors
+      - fieldalignment
+      - shadow
+      - unusedwrite
+      - sigchanyzer
+      - loopclosure
+
+  revive:
+    rules:
+      - name: duplicated-imports
+        severity: warning
+        disabled: false
+      - name: empty-lines
+        severity: warning
+        disabled: false
+      - name: error-naming
+        severity: warning
+        disabled: false
+      - name: error-return
+        severity: warning
+        disabled: false
+      - name: if-return
+        severity: warning
+        disabled: false
+
+issues:
+  exclude-rules:
+    # Exclude some linters from running on tests files.
+    - path: tools\.go
+      linters:
+        - gofmt
