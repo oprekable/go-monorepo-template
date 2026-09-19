@@ -17,8 +17,8 @@ jobs:
       - name: Replace Placeholder with new repo
         run: |
           REPO_NAME="${GITHUB_REPOSITORY#*/}"
-          find . -type f -not -path '*/\.git/*' -exec sed -i "s/{{GITHUB_REPOSITORY}}/$GITHUB_REPOSITORY/g" {} +
-          find . -type f -not -path '*/\.git/*' -exec sed -i "s/{{REPO_NAME}}/$REPO_NAME/g" {} +
+          find . -type f -not -path '*/\.git/*' -exec sed -i "s|{{GITHUB_REPOSITORY}}|$GITHUB_REPOSITORY|g" {} +
+          find . -type f -not -path '*/\.git/*' -exec sed -i "s|{{REPO_NAME}}|$REPO_NAME|g" {} +
 
       - name: Delete Workflow Setup
         run: |
