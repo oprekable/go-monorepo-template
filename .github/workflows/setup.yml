@@ -1,0 +1,33 @@
+name: Setup Template
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  setup:
+    if: ${{ github.repository != 'oprekable/go-monorepo-template' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Replace Placeholder with new repo
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          find . -type f -not -path '*/\.git/*' -exec sed -i "s/{{GITHUB_REPOSITORY}}/$GITHUB_REPOSITORY/g" {} +
+          find . -type f -not -path '*/\.git/*' -exec sed -i "s/{{REPO_NAME}}/$REPO_NAME/g" {} +
+
+      - name: Delete Workflow Setup
+        run: |
+          rm .github/workflows/setup.yml
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -m "chore: init repo name form template"
+          git push
