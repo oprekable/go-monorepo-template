@@ -7,13 +7,15 @@
 
 .PHONY: release
 release: ## Tag & push a module release (MODULE=<dir> VERSION=v<semver>)
-	@if [ -z "$(MODULE)" ] || [ -z "$(VERSION)" ]; then \
+	@echo "Cleanup tag..."; \
+	git fetch --prune --prune-tags origin; \
+	if [ -z "$(MODULE)" ] || [ -z "$(VERSION)" ]; then \
 		echo "Usage: make release MODULE=<dir> VERSION=v<semver>"; \
 		echo "  MODULE=. for root, or relative dir like pkg/hertz/doer"; \
 		echo "  VERSION=v0.1.0"; \
 		exit 1; \
 	fi
-	@if ! echo "$(VERSION)" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+$$'; then \
+	if ! echo "$(VERSION)" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+$$'; then \
 		echo "Error: VERSION must match v<major>.<minor>.<patch> (e.g. v0.1.0)"; \
 		exit 1; \
 	fi
@@ -31,8 +33,6 @@ release: ## Tag & push a module release (MODULE=<dir> VERSION=v<semver>)
 	echo "Module:  $$MOD"; \
 	echo "Tag:     $$TAG"; \
 	echo ""; \
-	echo "Cleanup tag..."; \
-	git fetch --prune --prune-tags origin; \
 	EXISTING=$$(git tag -l "$$TAG" 2>/dev/null); \
 	if [ -n "$$EXISTING" ]; then \
 		echo "Error: tag $$TAG already exists"; \
@@ -47,7 +47,9 @@ release: ## Tag & push a module release (MODULE=<dir> VERSION=v<semver>)
 
 .PHONY: release-list
 release-list: ## List modules and their latest tags (MODULE=<dir> for one module)
-	@if [ -n "$(MODULE)" ] && [ "$(MODULE)" != "." ]; then \
+	@echo "Cleanup tag..."; \
+	git fetch --prune --prune-tags origin; \
+	if [ -n "$(MODULE)" ] && [ "$(MODULE)" != "." ]; then \
 		PREFIX=$$(echo "$(MODULE)" | sed 's|^./||; s|/$$||'); \
 		echo "Tags for $$PREFIX:"; \
 		git tag -l "$$PREFIX/v*" --sort=-v:refname | grep -E "^$$PREFIX/v[0-9]" || true; \
