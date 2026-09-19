@@ -26,7 +26,7 @@ jobs:
           cache: true
 
       - name: Configure private Go modules
-        run: git config --global url."https://${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
+        run: git config --global url."https://${{ secrets.GITHUB_TOKEN }}@github.com/{{REPO_OWNER}}".insteadOf "https://github.com/{{REPO_OWNER}}"
         env:
           GOPRIVATE: github.com/{{REPO_OWNER}}/*
 
