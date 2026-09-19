@@ -21,8 +21,6 @@ jobs:
           find . -type f -not -path '*/\.git/*' -exec sed -i "s|{{GITHUB_REPOSITORY}}|$GITHUB_REPOSITORY|g" {} +
           find . -type f -not -path '*/\.git/*' -exec sed -i "s|{{REPO_NAME}}|$REPO_NAME|g" {} +
           find . -type f -not -path '*/\.git/*' -exec sed -i "s|{{REPO_OWNER}}|$REPO_OWNER|g" {} +
-          mv -f .github/_workflows/*.*  .github/workflows/
-          rm -rf .github/_workflows
 
       - name: Delete Workflow Setup
         run: |

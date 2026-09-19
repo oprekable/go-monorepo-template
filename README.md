@@ -30,6 +30,10 @@ Each directory with a `go.mod` is an independent module under `github.com/{{GITH
 # Clone and sync all modules
 git clone git@github.com:{{GITHUB_REPOSITORY}}.git
 cd {{REPO_NAME}}
+
+mv -f .github/_workflows/*.*  .github/workflows/
+rm -rf .github/_workflows
+
 make go-mod-tidy
 
 # Sync tags
